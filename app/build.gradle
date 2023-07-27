@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.library'
-    id 'maven-publish'
 }
 
 android {
@@ -34,19 +33,6 @@ android {
 
     buildFeatures {
         viewBinding true
-    }
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = "com.gitee.shadowless_lhq"
-                artifactId = 'BasePopView'
-                version = android.defaultConfig.versionName
-            }
-        }
     }
 }
 
