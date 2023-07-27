@@ -8,7 +8,6 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "cn.com.shadowless.basepopview"
         minSdk 19
         targetSdk 32
         versionCode 1
@@ -43,7 +42,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = android.defaultConfig.applicationId
+                groupId = "com.gitee.shadowless_lhq"
                 artifactId = 'BasePopView'
                 version = android.defaultConfig.versionName
             }
