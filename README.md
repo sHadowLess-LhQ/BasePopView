@@ -30,10 +30,6 @@ Step 1. 添加maven仓库地址和配置
 ```
 
 ```
-
-```
-
-```
      //主项目的build.gradle中加入
      //新AndroidStudio版本
      android {
@@ -66,6 +62,7 @@ b、远程仓库引入
 ```
      dependencies {
         implementation 'com.gitee.shadowless_lhq:base-pop-view:Tag'
+        implementation 'com.github.li-xiaojun:XPopup:2.9.4'
     }
 ```
 
