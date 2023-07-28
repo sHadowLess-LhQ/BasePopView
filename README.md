@@ -2,7 +2,9 @@
 
 #### 软件架构
 
-个人自用XPop封装基类（支持ViewBinding）
+个人自用XPop封装基类（支持ViewBinding、支持观察其他Lifecycle自动关闭）
+
+## ==本质还是懒，不想down大佬的源码直接添加==
 
 #### 安装教程
 
@@ -95,16 +97,14 @@ c、混淆规则
      //BaseVerticalAttachPopView - 垂直弹出可依附视图弹窗
      //BaseVerticalBubbleAttachPopupView - 垂直弹出可依附气泡弹窗
      //【注】：内部使用Fragment，需要设置isViewMode为true
+     //已经指定在ON_DESTROY事件解除订阅和关闭，需要重新指定，重写onStateChanged方法
      //继承示例
      public class TestPopView extends BaseCenterPopView<PopAddCardViewBinding>{
 
          public TestPopView(@NonNull Context context) {
             super(context);
-         }
-         
-      
-         public TestPopView(@NonNull Context context, Lifecycle lifecycle) {
-              super(context, lifecycle);
+            //需要观察的Lifecycle
+            setNeedObserveLifecycle(Lifecycle lifecycle);
          }
          
          @NonNull

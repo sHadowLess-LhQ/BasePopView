@@ -6,6 +6,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.BubbleHorizontalAttachPopupView;
@@ -16,7 +18,7 @@ import com.lxj.xpopup.core.BubbleHorizontalAttachPopupView;
  * @param <VB> the type 绑定视图
  * @author sHadowLess
  */
-public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding> extends BubbleHorizontalAttachPopupView implements  View.OnClickListener {
+public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding> extends BubbleHorizontalAttachPopupView implements LifecycleEventObserver, View.OnClickListener {
 
     /**
      * 绑定视图
@@ -35,17 +37,6 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
     public BaseBubbleHorizontalAttachPopupView(@NonNull Context context) {
         super(context);
         this.context = context;
-    }
-
-    /**
-     * 构造
-     *
-     * @param context the 上下文
-     */
-    public BaseBubbleHorizontalAttachPopupView(@NonNull Context context, Lifecycle lifecycle) {
-        super(context);
-        this.context = context;
-        lifecycle.addObserver(this);
     }
 
     @Override
@@ -74,6 +65,23 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
         if (!ClickUtils.isFastClick()) {
             click(v);
         }
+    }
+
+    @Override
+    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+        if (event == Lifecycle.Event.ON_DESTROY) {
+            source.getLifecycle().removeObserver(this);
+            this.dismiss();
+        }
+    }
+
+    /**
+     * Sets observer lifecycle.
+     *
+     * @param lifecycle the lifecycle
+     */
+    public void setNeedObserveLifecycle(Lifecycle lifecycle) {
+        lifecycle.addObserver(this);
     }
 
     /**

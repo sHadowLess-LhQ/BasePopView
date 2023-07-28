@@ -6,6 +6,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.BubbleAttachPopupView;
@@ -16,7 +18,7 @@ import com.lxj.xpopup.core.BubbleAttachPopupView;
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> extends BubbleAttachPopupView implements  View.OnClickListener {
+public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> extends BubbleAttachPopupView implements LifecycleEventObserver, View.OnClickListener {
 
     /**
      * 绑定视图
@@ -35,17 +37,6 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
     public BaseVerticalBubbleAttachPopupView(@NonNull Context context) {
         super(context);
         this.context = context;
-    }
-
-    /**
-     * 构造
-     *
-     * @param context the 上下文
-     */
-    public BaseVerticalBubbleAttachPopupView(@NonNull Context context, Lifecycle lifecycle) {
-        super(context);
-        this.context = context;
-        lifecycle.addObserver(this);
     }
 
     @Override
@@ -74,6 +65,23 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
         if (!ClickUtils.isFastClick()) {
             click(v);
         }
+    }
+
+    @Override
+    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+        if (event == Lifecycle.Event.ON_DESTROY) {
+            source.getLifecycle().removeObserver(this);
+            this.dismiss();
+        }
+    }
+
+    /**
+     * Sets observer lifecycle.
+     *
+     * @param lifecycle the lifecycle
+     */
+    public void setNeedObserveLifecycle(Lifecycle lifecycle) {
+        lifecycle.addObserver(this);
     }
 
     /**
