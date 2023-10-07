@@ -1,4 +1,4 @@
-package cn.com.shadowless.basepopview;
+package cn.com.shadowless.basepopview.base;
 
 import android.content.Context;
 import android.view.View;
@@ -12,6 +12,10 @@ import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.BottomPopupView;
 
+import cn.com.shadowless.basepopview.utils.ClickUtils;
+import cn.com.shadowless.basepopview.R;
+import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
+
 /**
  * 底部弹窗
  *
@@ -24,6 +28,7 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
      * 绑定视图
      */
     private VB bind = null;
+
     /**
      * 上下文
      */
@@ -48,7 +53,10 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     @Override
     protected void onCreate() {
         super.onCreate();
-        bind = setBindView(getPopupImplView());
+        bind = inflateView();
+        if (bind == null) {
+            throw new RuntimeException("视图无法反射初始化，请检查setBindViewClassName传是否入绝对路径或重写自实现inflateView方法");
+        }
         initView();
         if (isDefaultBackground()) {
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_shape));
@@ -86,6 +94,20 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     }
 
     /**
+     * Inflate view vb.
+     *
+     * @return the vb
+     */
+    protected VB inflateView() {
+        try {
+            return (VB) ViewBindingUtils.inflate(setBindViewClassName(), getPopupImplView());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 获取绑定视图控件
      *
      * @return the bind view
@@ -102,13 +124,12 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     protected abstract int setLayoutId();
 
     /**
-     * 设置绑定视图
+     * Sets bind view class name.
      *
-     * @param v the v
-     * @return the bind view
+     * @return the bind view class name
      */
     @NonNull
-    protected abstract VB setBindView(View v);
+    protected abstract String setBindViewClassName();
 
     /**
      * 是否默认背景颜色

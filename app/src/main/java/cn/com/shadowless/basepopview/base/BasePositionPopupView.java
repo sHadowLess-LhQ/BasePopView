@@ -1,4 +1,4 @@
-package cn.com.shadowless.basepopview;
+package cn.com.shadowless.basepopview.base;
 
 import android.content.Context;
 import android.view.View;
@@ -10,15 +10,19 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.viewbinding.ViewBinding;
 
-import com.lxj.xpopup.core.CenterPopupView;
+import com.lxj.xpopup.core.PositionPopupView;
+
+import cn.com.shadowless.basepopview.utils.ClickUtils;
+import cn.com.shadowless.basepopview.R;
+import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
 
 /**
- * 居中弹窗
+ * 定位弹窗
  *
- * @param <VB> the type 绑定视图
+ * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPopupView implements LifecycleEventObserver, View.OnClickListener {
+public abstract class BasePositionPopupView<VB extends ViewBinding> extends PositionPopupView implements LifecycleEventObserver, View.OnClickListener {
 
     /**
      * 绑定视图
@@ -34,7 +38,7 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
      *
      * @param context the 上下文
      */
-    public BaseCenterPopView(@NonNull Context context) {
+    public BasePositionPopupView(@NonNull Context context) {
         super(context);
         this.context = context;
     }
@@ -47,7 +51,10 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
     @Override
     protected void onCreate() {
         super.onCreate();
-        bind = setBindView(getPopupImplView());
+        bind = inflateView();
+        if (bind == null) {
+            throw new RuntimeException("视图无法反射初始化，请检查setBindViewClassName传是否入绝对路径或重写自实现inflateView方法");
+        }
         initView();
         if (isDefaultBackground()) {
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_radius_shape));
@@ -85,6 +92,20 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
     }
 
     /**
+     * Inflate view vb.
+     *
+     * @return the vb
+     */
+    protected VB inflateView() {
+        try {
+            return (VB) ViewBindingUtils.inflate(setBindViewClassName(), getPopupImplView());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 获取绑定视图控件
      *
      * @return the bind view
@@ -101,13 +122,12 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
     protected abstract int setLayoutId();
 
     /**
-     * 设置绑定视图
+     * Sets bind view class name.
      *
-     * @param v the v
-     * @return the bind view
+     * @return the bind view class name
      */
     @NonNull
-    protected abstract VB setBindView(View v);
+    protected abstract String setBindViewClassName();
 
     /**
      * 是否默认背景颜色

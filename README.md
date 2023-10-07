@@ -4,7 +4,7 @@
 
 个人自用XPop封装基类（支持ViewBinding、支持观察其他Lifecycle自动关闭）
 
-## ==本质还是懒，不想down大佬的源码直接添加==
+## ==本质还是懒，不想down大佬的源码去添加==
 
 #### 安装教程
 
@@ -107,15 +107,22 @@ c、混淆规则
             setNeedObserveLifecycle(Lifecycle lifecycle);
          }
          
-         @NonNull
-         @Override
-         protected PopAddCardViewBinding setBindView(View v) {
-            return PopAddCardViewBinding.bind(v);
-         }
-         
          @Override
          protected void setLayoutId() {
              return R.layout.pop_addCard_view;
+         }
+         
+         @NonNull
+         @Override
+         protected String setBindViewClassName() {
+            //返回ViewBinding类的完整类名（路径+类名）
+            return PopAddCardViewBinding.class.getName();
+         }
+          
+         @Override
+         protected PopAddCardViewBinding inflateView() {
+            //可重写后实现视图初始化
+            return super.inflateView();
          }
          
          @Override
@@ -125,7 +132,7 @@ c、混淆规则
         
          @Override
          protected void initView() {
-       
+            getBindView().test.setText("");
          }
 
          @Override

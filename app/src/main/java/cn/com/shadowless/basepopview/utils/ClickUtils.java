@@ -1,4 +1,4 @@
-package cn.com.shadowless.basepopview;
+package cn.com.shadowless.basepopview.utils;
 
 /**
  * The type Click utils.
