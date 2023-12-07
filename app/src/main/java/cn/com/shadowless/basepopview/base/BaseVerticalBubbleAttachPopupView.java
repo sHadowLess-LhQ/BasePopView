@@ -23,7 +23,7 @@ import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding, T> extends BubbleAttachPopupView implements LifecycleEventObserver, View.OnClickListener {
+public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding, T> extends BubbleAttachPopupView implements View.OnClickListener {
 
     /**
      * 绑定视图
@@ -83,23 +83,6 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding, 
         if (!ClickUtils.isFastClick()) {
             click(v);
         }
-    }
-
-    @Override
-    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-        if (event == Lifecycle.Event.ON_DESTROY) {
-            source.getLifecycle().removeObserver(this);
-            this.dismiss();
-        }
-    }
-
-    /**
-     * Sets observer lifecycle.
-     *
-     * @param lifecycle the lifecycle
-     */
-    public void setNeedObserveLifecycle(Lifecycle lifecycle) {
-        lifecycle.addObserver(this);
     }
 
     /**

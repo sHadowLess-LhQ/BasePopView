@@ -23,7 +23,7 @@ import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BasePositionPopupView<VB extends ViewBinding, T> extends PositionPopupView implements LifecycleEventObserver, View.OnClickListener {
+public abstract class BasePositionPopupView<VB extends ViewBinding, T> extends PositionPopupView implements View.OnClickListener {
 
     /**
      * 绑定视图
@@ -83,23 +83,6 @@ public abstract class BasePositionPopupView<VB extends ViewBinding, T> extends P
         if (!ClickUtils.isFastClick()) {
             click(v);
         }
-    }
-
-    @Override
-    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-        if (event == Lifecycle.Event.ON_DESTROY) {
-            source.getLifecycle().removeObserver(this);
-            this.dismiss();
-        }
-    }
-
-    /**
-     * Sets observer lifecycle.
-     *
-     * @param lifecycle the lifecycle
-     */
-    public void setNeedObserveLifecycle(Lifecycle lifecycle) {
-        lifecycle.addObserver(this);
     }
 
     /**
