@@ -12,6 +12,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.CenterPopupView;
 
+import cn.com.shadowless.basepopview.callback.PopDataCallBack;
 import cn.com.shadowless.basepopview.utils.ClickUtils;
 import cn.com.shadowless.basepopview.R;
 import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
@@ -20,9 +21,10 @@ import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
  * 居中弹窗
  *
  * @param <VB> the type 绑定视图
+ * @param <T>  the type parameter
  * @author sHadowLess
  */
-public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPopupView implements LifecycleEventObserver, View.OnClickListener {
+public abstract class BaseCenterPopView<VB extends ViewBinding, T> extends CenterPopupView implements LifecycleEventObserver, View.OnClickListener {
 
     /**
      * 绑定视图
@@ -55,10 +57,20 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
         if (bind == null) {
             throw new RuntimeException("视图无法反射初始化，请检查setBindViewClassName传是否入绝对路径或重写自实现inflateView方法");
         }
-        initView();
         if (isDefaultBackground()) {
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_radius_shape));
         }
+        initData(new PopDataCallBack<T>() {
+            @Override
+            public void success(T data) {
+                initSuccessView(data);
+            }
+
+            @Override
+            public void fail(Throwable e) {
+                initFailView(e);
+            }
+        });
     }
 
     @Override
@@ -137,9 +149,25 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
     protected abstract boolean isDefaultBackground();
 
     /**
-     * 初始化视图
+     * 初始化数据
+     *
+     * @param callBack the call back
      */
-    protected abstract void initView();
+    protected abstract void initData(PopDataCallBack<T> callBack);
+
+    /**
+     * 初始化成功视图
+     *
+     * @param data the data
+     */
+    protected abstract void initSuccessView(T data);
+
+    /**
+     * 初始化失败视图
+     *
+     * @param e the e
+     */
+    protected abstract void initFailView(Throwable e);
 
     /**
      * 初始化监听

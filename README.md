@@ -4,7 +4,7 @@
 
 个人自用XPop封装基类（支持ViewBinding、支持观察其他Lifecycle自动关闭）
 
-## ==本质还是懒，不想down大佬的源码去添加==
+## ==懒，不想down大佬的源码去添加==
 
 #### 安装教程
 
@@ -99,7 +99,7 @@ c、混淆规则
      //【注】：内部使用Fragment，需要设置isViewMode为true
      //已经指定在ON_DESTROY事件解除订阅和关闭，需要重新指定，重写onStateChanged方法
      //继承示例
-     public class TestPopView extends BaseCenterPopView<PopAddCardViewBinding>{
+     public class TestPopView extends BaseCenterPopView<ViewBinding>{
 
          public TestPopView(@NonNull Context context) {
             super(context);
@@ -109,18 +109,19 @@ c、混淆规则
          
          @Override
          protected void setLayoutId() {
-             return R.layout.pop_addCard_view;
+             //视图布局
+             return 0;
          }
          
          @NonNull
          @Override
          protected String setBindViewClassName() {
             //返回ViewBinding类的完整类名（路径+类名）
-            return PopAddCardViewBinding.class.getName();
+            return ViewBinding.class.getName();
          }
           
          @Override
-         protected PopAddCardViewBinding inflateView() {
+         protected ViewBinding inflateView() {
             //可重写后实现视图初始化
             return super.inflateView();
          }
@@ -129,10 +130,22 @@ c、混淆规则
          protected boolean isDefaultBackground() {
             return false;
          }
-        
+         
          @Override
-         protected void initView() {
-            getBindView().test.setText("");
+         protected void initData(PopDataCallBack<String> callBack) {
+             //在此获取数据回调给initSuccessView或initFailView
+             callBack.success();
+             callBack.fail();
+         }
+
+         @Override
+         protected void initSuccessView(String data) {
+             getBindView().test.setText(data);
+         }
+
+         @Override
+         protected void initFailView(Throwable e) {
+
          }
 
          @Override
