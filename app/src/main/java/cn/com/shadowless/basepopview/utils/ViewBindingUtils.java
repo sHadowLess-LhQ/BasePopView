@@ -75,4 +75,29 @@ public class ViewBindingUtils {
         Method inflateMethod = bindingClass.getMethod("bind", View.class);
         return (T) inflateMethod.invoke(null, view);
     }
+
+    /**
+     * Gets layout name by binding class.
+     *
+     * @param cls the cls
+     * @return the layout name by binding class
+     */
+    public static String getLayoutNameByBindingClass(Class<?> cls) {
+        StringBuilder builder = new StringBuilder();
+        boolean isFirst = true;
+        String name = cls.getSimpleName();
+        for (int i = 0; i < name.length(); i++) {
+            char temp = name.charAt(i);
+            if (Character.isUpperCase(temp)) {
+                if (!isFirst) {
+                    builder.append("_");
+                }
+                isFirst = false;
+            }
+            builder.append(temp);
+        }
+        String layoutName = builder.toString();
+        layoutName = layoutName.substring(0, layoutName.lastIndexOf("_")).toLowerCase();
+        return layoutName;
+    }
 }

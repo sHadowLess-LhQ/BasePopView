@@ -5,26 +5,21 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.BottomPopupView;
 
-import cn.com.shadowless.basepopview.callback.PopDataCallBack;
-import cn.com.shadowless.basepopview.utils.ClickUtils;
 import cn.com.shadowless.basepopview.R;
+import cn.com.shadowless.basepopview.utils.ClickUtils;
 import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
 
 /**
  * 底部弹窗
  *
  * @param <VB> the type 绑定视图
- * @param <T>  the type parameter
  * @author sHadowLess
  */
-public abstract class BaseBottomPopView<VB extends ViewBinding, T> extends BottomPopupView implements View.OnClickListener {
+public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPopupView implements View.OnClickListener {
 
     /**
      * 绑定视图
@@ -48,7 +43,7 @@ public abstract class BaseBottomPopView<VB extends ViewBinding, T> extends Botto
 
     @Override
     protected int getImplLayoutId() {
-        return setLayoutId();
+        return context.getResources().getIdentifier(ViewBindingUtils.getLayoutNameByBindingClass(setBindViewClass()), "layout", context.getPackageName());
     }
 
     @Override
@@ -61,17 +56,8 @@ public abstract class BaseBottomPopView<VB extends ViewBinding, T> extends Botto
         if (isDefaultBackground()) {
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_shape));
         }
-        initData(new PopDataCallBack<T>() {
-            @Override
-            public void success(T data) {
-                initSuccessView(data);
-            }
-
-            @Override
-            public void fail(Throwable e) {
-                initFailView(e);
-            }
-        });
+        initBindDataLister();
+        initData();
     }
 
     @Override
@@ -111,19 +97,12 @@ public abstract class BaseBottomPopView<VB extends ViewBinding, T> extends Botto
     }
 
     /**
-     * 设置布局编号
-     *
-     * @return the layout id
-     */
-    protected abstract int setLayoutId();
-
-    /**
      * Sets bind view class name.
      *
      * @return the bind view class name
      */
     @NonNull
-    protected abstract Class<ViewBinding> setBindViewClass();
+    protected abstract Class<VB> setBindViewClass();
 
     /**
      * 是否默认背景颜色
@@ -133,25 +112,14 @@ public abstract class BaseBottomPopView<VB extends ViewBinding, T> extends Botto
     protected abstract boolean isDefaultBackground();
 
     /**
-     * 初始化数据
-     *
-     * @param callBack the call back
-     */
-    protected abstract void initData(PopDataCallBack<T> callBack);
-
-    /**
      * 初始化成功视图
-     *
-     * @param data the data
      */
-    protected abstract void initSuccessView(T data);
+    protected abstract void initBindDataLister();
 
     /**
-     * 初始化失败视图
-     *
-     * @param e the e
+     * 初始化数据
      */
-    protected abstract void initFailView(Throwable e);
+    protected abstract void initData();
 
     /**
      * 初始化监听

@@ -47,7 +47,7 @@ public abstract class BaseCenterPopView<VB extends ViewBinding, T> extends Cente
 
     @Override
     protected int getImplLayoutId() {
-        return setLayoutId();
+        return context.getResources().getIdentifier(ViewBindingUtils.getLayoutNameByBindingClass(setBindViewClass()), "layout", context.getPackageName());
     }
 
     @Override
@@ -60,17 +60,8 @@ public abstract class BaseCenterPopView<VB extends ViewBinding, T> extends Cente
         if (isDefaultBackground()) {
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_radius_shape));
         }
-        initData(new PopDataCallBack<T>() {
-            @Override
-            public void success(T data) {
-                initSuccessView(data);
-            }
-
-            @Override
-            public void fail(Throwable e) {
-                initFailView(e);
-            }
-        });
+        initBindDataLister();
+        initData();
     }
 
     @Override
@@ -110,19 +101,12 @@ public abstract class BaseCenterPopView<VB extends ViewBinding, T> extends Cente
     }
 
     /**
-     * 设置布局编号
-     *
-     * @return the layout id
-     */
-    protected abstract int setLayoutId();
-
-    /**
      * Sets bind view class name.
      *
      * @return the bind view class name
      */
     @NonNull
-    protected abstract Class<ViewBinding> setBindViewClass();
+    protected abstract Class<VB> setBindViewClass();
 
     /**
      * 是否默认背景颜色
@@ -132,25 +116,14 @@ public abstract class BaseCenterPopView<VB extends ViewBinding, T> extends Cente
     protected abstract boolean isDefaultBackground();
 
     /**
-     * 初始化数据
-     *
-     * @param callBack the call back
-     */
-    protected abstract void initData(PopDataCallBack<T> callBack);
-
-    /**
      * 初始化成功视图
-     *
-     * @param data the data
      */
-    protected abstract void initSuccessView(T data);
+    protected abstract void initBindDataLister();
 
     /**
-     * 初始化失败视图
-     *
-     * @param e the e
+     * 初始化数据
      */
-    protected abstract void initFailView(Throwable e);
+    protected abstract void initData();
 
     /**
      * 初始化监听

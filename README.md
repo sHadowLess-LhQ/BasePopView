@@ -4,6 +4,10 @@
 
 个人自用XPop封装基类（支持ViewBinding、支持观察其他Lifecycle自动关闭）
 
+## 【注】：layout的名称命名要规范，需要"_"分隔，不然无法通过名称拿到layout的id
+
+例：xxx_xxx.xml、xxx_xxx_xxx_xxx.xml
+
 ## ==懒，不想down大佬的源码去添加==
 
 #### 安装教程
@@ -97,7 +101,6 @@ c、混淆规则
      //BaseVerticalAttachPopView - 垂直弹出可依附视图弹窗
      //BaseVerticalBubbleAttachPopupView - 垂直弹出可依附气泡弹窗
      //【注】：内部使用Fragment，需要设置isViewMode为true
-     //已经指定在ON_DESTROY事件解除订阅和关闭，需要重新指定，重写onStateChanged方法
      //继承示例
      public class TestPopView extends BaseCenterPopView<ViewBinding>{
 
@@ -105,12 +108,6 @@ c、混淆规则
             super(context);
             //需要观察的Lifecycle
             setNeedObserveLifecycle(Lifecycle lifecycle);
-         }
-         
-         @Override
-         protected void setLayoutId() {
-             //视图布局
-             return 0;
          }
          
          @NonNull
@@ -132,20 +129,13 @@ c、混淆规则
          }
          
          @Override
-         protected void initData(PopDataCallBack<String> callBack) {
-             //在此获取数据回调给initSuccessView或initFailView
-             callBack.success();
-             callBack.fail();
+         protected void initBindDataLister() {
+            //初始化LiveData的观察者
          }
 
          @Override
-         protected void initSuccessView(String data) {
-             getBindView().test.setText(data);
-         }
-
-         @Override
-         protected void initFailView(Throwable e) {
-
+         protected void initData() {
+            //初始化数据
          }
 
          @Override
