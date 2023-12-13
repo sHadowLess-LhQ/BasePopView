@@ -92,7 +92,7 @@ public abstract class BasePositionPopupView<VB extends ViewBinding, T> extends P
      */
     protected VB inflateView() {
         try {
-            return (VB) ViewBindingUtils.inflate(setBindViewClassName(), getPopupImplView());
+            return ViewBindingUtils.inflate(setBindViewClass().getName(), getPopupImplView());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -121,7 +121,7 @@ public abstract class BasePositionPopupView<VB extends ViewBinding, T> extends P
      * @return the bind view class name
      */
     @NonNull
-    protected abstract String setBindViewClassName();
+    protected abstract Class<ViewBinding> setBindViewClass();
 
     /**
      * 是否默认背景颜色

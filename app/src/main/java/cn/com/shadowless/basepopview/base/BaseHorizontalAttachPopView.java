@@ -23,7 +23,7 @@ import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding,T> extends HorizontalAttachPopupView implements View.OnClickListener {
+public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding, T> extends HorizontalAttachPopupView implements View.OnClickListener {
 
     /**
      * 绑定视图
@@ -92,7 +92,7 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding,T> exte
      */
     protected VB inflateView() {
         try {
-            return (VB) ViewBindingUtils.inflate(setBindViewClassName(), getPopupImplView());
+            return ViewBindingUtils.inflate(setBindViewClass().getName(), getPopupImplView());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -121,7 +121,7 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding,T> exte
      * @return the bind view class name
      */
     @NonNull
-    protected abstract String setBindViewClassName();
+    protected abstract Class<ViewBinding> setBindViewClass();
 
     /**
      * 是否默认背景颜色

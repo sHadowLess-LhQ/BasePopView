@@ -115,9 +115,9 @@ c、混淆规则
          
          @NonNull
          @Override
-         protected String setBindViewClassName() {
-            //返回ViewBinding类的完整类名（路径+类名）
-            return ViewBinding.class.getName();
+         protected String setBindViewClass() {
+            //返回ViewBinding类
+            return ViewBinding.class;
          }
           
          @Override
