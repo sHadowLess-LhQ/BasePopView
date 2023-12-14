@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewbinding.ViewBinding;
 
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.core.BottomPopupView;
 
 import cn.com.shadowless.basepopview.R;
@@ -57,13 +58,13 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_shape));
         }
         initBindDataLister();
-        initData();
     }
 
     @Override
     protected void onShow() {
         super.onShow();
-        initListener();
+        initViewListener();
+        initData();
     }
 
     @Override
@@ -117,14 +118,14 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     protected abstract void initBindDataLister();
 
     /**
+     * 初始化视图监听
+     */
+    protected abstract void initViewListener();
+
+    /**
      * 初始化数据
      */
     protected abstract void initData();
-
-    /**
-     * 初始化监听
-     */
-    protected abstract void initListener();
 
     /**
      * 点击

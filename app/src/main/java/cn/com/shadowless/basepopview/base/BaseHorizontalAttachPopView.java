@@ -60,13 +60,13 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding, T> ext
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_full_shape));
         }
         initBindDataLister();
-        initData();
     }
 
     @Override
     protected void onShow() {
         super.onShow();
-        initListener();
+        initViewListener();
+        initData();
     }
 
     @Override
@@ -127,14 +127,14 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding, T> ext
     protected abstract void initBindDataLister();
 
     /**
+     * 初始化监听
+     */
+    protected abstract void initViewListener();
+
+    /**
      * 初始化数据
      */
     protected abstract void initData();
-
-    /**
-     * 初始化监听
-     */
-    protected abstract void initListener();
 
     /**
      * 点击
