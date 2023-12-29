@@ -129,18 +129,18 @@ c、混淆规则
          }
          
          @Override
-         protected void initBindDataLister() {
-            //初始化LiveData的观察者
+         protected void initViewListener() {
+            //初始化视图监听
          }
 
          @Override
          protected void initData() {
             //初始化数据
          }
-
-         @Override
-         protected void initListener() {
-       
+         
+          @Override
+         protected void initView() {
+            //初始化LiveData的观察者
          }
          
          @Override

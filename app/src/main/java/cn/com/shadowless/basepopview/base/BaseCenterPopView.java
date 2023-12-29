@@ -60,7 +60,6 @@ public abstract class BaseCenterPopView<VB extends ViewBinding, T> extends Cente
         if (isDefaultBackground()) {
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_radius_shape));
         }
-        initBindDataLister();
     }
 
     @Override
@@ -68,6 +67,7 @@ public abstract class BaseCenterPopView<VB extends ViewBinding, T> extends Cente
         super.onShow();
         initViewListener();
         initData();
+        initView();
     }
 
     @Override
@@ -116,11 +116,6 @@ public abstract class BaseCenterPopView<VB extends ViewBinding, T> extends Cente
     protected abstract boolean isDefaultBackground();
 
     /**
-     * 初始化成功视图
-     */
-    protected abstract void initBindDataLister();
-
-    /**
      * 初始化监听
      */
     protected abstract void initViewListener();
@@ -129,6 +124,11 @@ public abstract class BaseCenterPopView<VB extends ViewBinding, T> extends Cente
      * 初始化数据
      */
     protected abstract void initData();
+
+    /**
+     * 初始化成功视图
+     */
+    protected abstract void initView();
 
     /**
      * 点击
