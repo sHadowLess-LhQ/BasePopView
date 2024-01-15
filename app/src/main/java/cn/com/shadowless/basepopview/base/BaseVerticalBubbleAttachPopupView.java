@@ -42,7 +42,7 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
 
     @Override
     protected int getImplLayoutId() {
-        return setLayoutId();
+        return context.getResources().getIdentifier(ViewBindingUtils.getLayoutNameByBindingClass(setBindViewClass()), "layout", context.getPackageName());
     }
 
     @Override
@@ -94,13 +94,6 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
     protected VB getBindView() {
         return bind;
     }
-
-    /**
-     * 设置布局编号
-     *
-     * @return the layout id
-     */
-    protected abstract int setLayoutId();
 
     /**
      * Sets bind view class name.

@@ -5,14 +5,10 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.DrawerPopupView;
 
-import cn.com.shadowless.basepopview.callback.PopDataCallBack;
 import cn.com.shadowless.basepopview.utils.ClickUtils;
 import cn.com.shadowless.basepopview.R;
 import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
@@ -46,7 +42,7 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
 
     @Override
     protected int getImplLayoutId() {
-        return setLayoutId();
+        return context.getResources().getIdentifier(ViewBindingUtils.getLayoutNameByBindingClass(setBindViewClass()), "layout", context.getPackageName());
     }
 
     @Override
@@ -98,13 +94,6 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
     protected VB getBindView() {
         return bind;
     }
-
-    /**
-     * 设置布局编号
-     *
-     * @return the layout id
-     */
-    protected abstract int setLayoutId();
 
     /**
      * Sets bind view class name.
