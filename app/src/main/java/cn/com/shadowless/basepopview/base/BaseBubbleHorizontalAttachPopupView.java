@@ -5,14 +5,11 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
+
 import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.BubbleHorizontalAttachPopupView;
 
-import cn.com.shadowless.basepopview.callback.PopDataCallBack;
 import cn.com.shadowless.basepopview.utils.ClickUtils;
 import cn.com.shadowless.basepopview.R;
 import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
@@ -21,10 +18,9 @@ import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
  * 水平气泡弹窗
  *
  * @param <VB> the type 绑定视图
- * @param <T>  the type parameter
  * @author sHadowLess
  */
-public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding, T> extends BubbleHorizontalAttachPopupView implements View.OnClickListener {
+public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding> extends BubbleHorizontalAttachPopupView implements View.OnClickListener {
 
     /**
      * 绑定视图

@@ -23,7 +23,7 @@ import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseDrawerPopupView<VB extends ViewBinding,T> extends DrawerPopupView implements View.OnClickListener {
+public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends DrawerPopupView implements View.OnClickListener {
 
     /**
      * 绑定视图

@@ -5,14 +5,10 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.AttachPopupView;
 
-import cn.com.shadowless.basepopview.callback.PopDataCallBack;
 import cn.com.shadowless.basepopview.utils.ClickUtils;
 import cn.com.shadowless.basepopview.R;
 import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
@@ -23,7 +19,7 @@ import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseVerticalAttachPopView<VB extends ViewBinding, T> extends AttachPopupView implements View.OnClickListener {
+public abstract class BaseVerticalAttachPopView<VB extends ViewBinding> extends AttachPopupView implements View.OnClickListener {
 
     /**
      * 绑定视图
