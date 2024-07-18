@@ -1,7 +1,7 @@
 package cn.com.shadowless.basepopview.base;
 
 import android.content.Context;
-import android.view.View;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -9,9 +9,9 @@ import androidx.viewbinding.ViewBinding;
 
 import com.lxj.xpopup.core.DrawerPopupView;
 
-import cn.com.shadowless.basepopview.utils.ClickUtils;
 import cn.com.shadowless.basepopview.R;
 import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
+
 
 /**
  * 抽屉弹窗
@@ -19,7 +19,7 @@ import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends DrawerPopupView implements View.OnClickListener {
+public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends DrawerPopupView implements AntiShakingOnClickListener {
 
     /**
      * 绑定视图
@@ -49,27 +49,19 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
     protected void onCreate() {
         super.onCreate();
         bind = inflateView();
-        if (bind == null) {
-            throw new RuntimeException("视图无法反射初始化，请检查setBindViewClassName传是否入绝对路径或重写自实现inflateView方法");
-        }
         if (isDefaultBackground()) {
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_full_shape));
         }
+        initObject();
+        initView();
+        initViewListener();
+        initData();
+        initDataListener();
     }
 
     @Override
     protected void onShow() {
         super.onShow();
-        initViewListener();
-        initData();
-        initView();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (!ClickUtils.isFastClick()) {
-            click(v);
-        }
     }
 
     /**
@@ -81,9 +73,8 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
         try {
             return ViewBindingUtils.inflate(setBindViewClass().getName(), getPopupImplView());
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("视图无法反射初始化，请检查setBindViewClassName是否传入绝对路径或重写自实现inflateView方法捕捉堆栈" + Log.getStackTraceString(e));
         }
-        return null;
     }
 
     /**
@@ -111,7 +102,17 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
     protected abstract boolean isDefaultBackground();
 
     /**
-     * 初始化监听
+     * Init object.
+     */
+    protected abstract void initObject();
+
+    /**
+     * 初始化成功视图
+     */
+    protected abstract void initView();
+
+    /**
+     * 初始化视图监听
      */
     protected abstract void initViewListener();
 
@@ -121,15 +122,8 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
     protected abstract void initData();
 
     /**
-     * 初始化成功视图
+     * 绑定数据到视图
      */
-    protected abstract void initView();
-
-    /**
-     * 点击
-     *
-     * @param v the v
-     */
-    protected abstract void click(@NonNull View v);
+    protected abstract void initDataListener();
 
 }

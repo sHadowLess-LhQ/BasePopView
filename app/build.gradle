@@ -11,8 +11,6 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -37,9 +35,6 @@ android {
 }
 
 dependencies {
-
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-
-    //BaseXPop
-    api 'com.github.li-xiaojun:XPopup:2.9.4'
+    compileOnly 'androidx.appcompat:appcompat:1.2.0'
+    api 'com.github.li-xiaojun:XPopup:2.10.0'
 }

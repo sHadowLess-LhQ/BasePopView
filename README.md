@@ -2,7 +2,7 @@
 
 #### 软件架构
 
-个人自用XPop封装基类（支持ViewBinding、支持观察其他Lifecycle自动关闭）
+个人自用XPop封装基类（支持ViewBinding）
 
 ## 【注】：layout的名称命名要规范，需要"_"分隔，不然无法通过名称拿到layout的id
 
@@ -68,7 +68,7 @@ b、远程仓库引入
 ```
      dependencies {
         implementation 'com.gitee.shadowless_lhq:base-pop-view:Tag'
-        implementation 'com.github.li-xiaojun:XPopup:2.9.4'
+        implementation 'com.github.li-xiaojun:XPopup:2.10.0'
     }
 ```
 
@@ -87,9 +87,7 @@ c、混淆规则
 ```
      //创建xml后，点击编译，填入需要绑定的视图
      //支持ViewBinding
-     //支持LifecycleProvider
-     //支持监听Activity的声明周期
-     //click监听已做快速点击处理
+     //click监听已做快速点击处理，请实现antiShakingClick接口方法
      //共有9种基类封装弹窗
      //BaseBottomPopView - 底部弹出弹窗
      //BaseBubbleHorizontalAttachPopupView - 水平弹出可依附气泡弹窗
@@ -106,8 +104,6 @@ c、混淆规则
 
          public TestPopView(@NonNull Context context) {
             super(context);
-            //需要观察的Lifecycle
-            setNeedObserveLifecycle(Lifecycle lifecycle);
          }
          
          @NonNull
@@ -125,27 +121,34 @@ c、混淆规则
          
          @Override
          protected boolean isDefaultBackground() {
+            //是否使用内置默认背景
+            //不使用弹窗背景为透明
             return false;
          }
          
          @Override
-         protected void initViewListener() {
-            //初始化视图监听
+         protected void initObject() {
+            //初始化对象
          }
-
+         
+         @Override
+         protected void initView() {
+            //初始化视图
+         }
+         
+         @Override
+         protected void initViewListener() {
+            //初始化视图事件
+         }
+         
          @Override
          protected void initData() {
             //初始化数据
          }
-         
-          @Override
-         protected void initView() {
-            //初始化LiveData的观察者
-         }
-         
+      
          @Override
-         protected void click(View v) {
-              
+         protected void initDataListener() {
+            //初始化数据事件
          }
       }
 ```

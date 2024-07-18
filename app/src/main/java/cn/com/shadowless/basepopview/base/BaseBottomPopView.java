@@ -1,17 +1,15 @@
 package cn.com.shadowless.basepopview.base;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewbinding.ViewBinding;
-
 import com.lxj.xpopup.core.BottomPopupView;
 
 import cn.com.shadowless.basepopview.R;
-import cn.com.shadowless.basepopview.utils.ClickUtils;
 import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
+
 
 /**
  * 底部弹窗
@@ -19,7 +17,7 @@ import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
  * @param <VB> the type 绑定视图
  * @author sHadowLess
  */
-public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPopupView implements View.OnClickListener {
+public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPopupView implements AntiShakingOnClickListener {
 
     /**
      * 绑定视图
@@ -51,26 +49,16 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
         super.onCreate();
         bind = inflateView();
         if (bind == null) {
-            throw new RuntimeException("视图无法反射初始化，请检查setBindViewClassName传是否入绝对路径或重写自实现inflateView方法");
+            throw new RuntimeException("视图反射初始化失败，请检查setBindViewClassName是否传入绝对路径或重写自实现inflateView方法捕捉堆栈");
         }
         if (isDefaultBackground()) {
             getPopupImplView().setBackground(AppCompatResources.getDrawable(context, R.drawable.bg_base_pop_bottom_shape));
         }
-    }
-
-    @Override
-    protected void onShow() {
-        super.onShow();
+        initObject();
+        initView();
         initViewListener();
         initData();
-        initView();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (!ClickUtils.isFastClick()) {
-            click(v);
-        }
+        initDataListener();
     }
 
     /**
@@ -112,6 +100,16 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     protected abstract boolean isDefaultBackground();
 
     /**
+     * Init object.
+     */
+    protected abstract void initObject();
+
+    /**
+     * 初始化成功视图
+     */
+    protected abstract void initView();
+
+    /**
      * 初始化视图监听
      */
     protected abstract void initViewListener();
@@ -122,15 +120,8 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     protected abstract void initData();
 
     /**
-     * 初始化成功视图
+     * 绑定数据到视图
      */
-    protected abstract void initView();
-
-    /**
-     * 点击
-     *
-     * @param v the v
-     */
-    protected abstract void click(@NonNull View v);
+    protected abstract void initDataListener();
 
 }
