@@ -88,6 +88,10 @@ c、混淆规则
      //创建xml后，点击编译，填入需要绑定的视图
      //支持ViewBinding
      //click监听已做快速点击处理，请实现antiShakingClick接口方法
+     //如果单个Pop需要动态使用不同的布局文件，请给BaseActivity的泛型类型
+     //传递ViewBinding，并重写setBindViewClass模板方法,传递不同ViewBinding类
+     //如果有反射加载视图慢的情况，请重写inflateView方法，手动实现ViewBinding类创建
+     //需要更改点击防抖时间阈值，请重写isFastClick，在超类调用传递时间
      //共有9种基类封装弹窗
      //BaseBottomPopView - 底部弹出弹窗
      //BaseBubbleHorizontalAttachPopupView - 水平弹出可依附气泡弹窗
@@ -104,13 +108,6 @@ c、混淆规则
 
          public TestPopView(@NonNull Context context) {
             super(context);
-         }
-         
-         @NonNull
-         @Override
-         protected String setBindViewClass() {
-            //返回ViewBinding类
-            return ViewBinding.class;
          }
           
          @Override
@@ -149,6 +146,36 @@ c、混淆规则
          @Override
          protected void initDataListener() {
             //初始化数据事件
+         }
+         
+         @Override
+         public Class<ViewBinding> setBindViewClass() {
+              //动态布局
+               Class<?> cls;
+               if (i == 1) {
+                  cls = ActivityMainBinding.class;
+               } else {
+                  cls = XxxBinding.class;
+               }
+               return (Class<ViewBinding>) cls;
+         }
+      
+         @Override
+         public boolean isFastClick(int time) {
+              //传递需要的防抖时间阈值 
+              return super.isFastClick(time);
+         }
+      
+         @Override
+         public ViewBinding inflateView(View view) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+              //手动实现ViewBinding类
+              return super.inflateView(view);
+         }
+      
+         @Override
+         public void antiShakingClick(View v) {
+              super.antiShakingClick(v);
+              //点击事件
          }
       }
 ```

@@ -6,9 +6,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.viewbinding.ViewBinding;
+
 import com.lxj.xpopup.core.BubbleAttachPopupView;
 
-import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
+import java.lang.reflect.InvocationTargetException;
+
+import cn.com.shadowless.basepopview.event.PopPublicEvent;
 
 
 /**
@@ -17,16 +20,13 @@ import cn.com.shadowless.basepopview.utils.ViewBindingUtils;
  * @param <VB> the type parameter
  * @author sHadowLess
  */
-public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> extends BubbleAttachPopupView implements AntiShakingOnClickListener {
+public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> extends BubbleAttachPopupView implements
+        PopPublicEvent<VB> {
 
     /**
      * 绑定视图
      */
     private VB bind = null;
-    /**
-     * 上下文
-     */
-    private final Context context;
 
 
     /**
@@ -36,18 +36,25 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
      */
     public BaseVerticalBubbleAttachPopupView(@NonNull Context context) {
         super(context);
-        this.context = context;
     }
 
     @Override
     protected int getImplLayoutId() {
-        return context.getResources().getIdentifier(ViewBindingUtils.getLayoutNameByBindingClass(setBindViewClass()), "layout", context.getPackageName());
+        return getContext().getResources().getIdentifier(
+                this.getLayoutNameByBindingClass(initGenericsClass()),
+                DEF_TYPE,
+                getContext().getPackageName()
+        );
     }
 
     @Override
     protected void onCreate() {
         super.onCreate();
-        bind = inflateView();
+        try {
+            bind = inflateView(getPopupImplView());
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            throw new RuntimeException("视图无法反射初始化，若动态布局请检查setBindViewClass是否传入或重写inflateView手动实现ViewBinding创建" + Log.getStackTraceString(e));
+        }
         if (isDefaultBackground()) {
             this.setBubbleBgColor(Color.WHITE);
         }
@@ -59,19 +66,6 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
     }
 
     /**
-     * Inflate view vb.
-     *
-     * @return the vb
-     */
-    protected VB inflateView() {
-        try {
-            return ViewBindingUtils.inflate(setBindViewClass().getName(), getPopupImplView());
-        } catch (Exception e) {
-            throw new RuntimeException("视图无法反射初始化，请检查setBindViewClassName是否传入绝对路径或重写自实现inflateView方法捕捉堆栈" + Log.getStackTraceString(e));
-        }
-    }
-
-    /**
      * 获取绑定视图控件
      *
      * @return the bind view
@@ -79,45 +73,5 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
     protected VB getBindView() {
         return bind;
     }
-
-    /**
-     * Sets bind view class name.
-     *
-     * @return the bind view class name
-     */
-    @NonNull
-    protected abstract Class<VB> setBindViewClass();
-
-    /**
-     * 是否默认背景颜色
-     *
-     * @return the boolean
-     */
-    protected abstract boolean isDefaultBackground();
-
-    /**
-     * Init object.
-     */
-    protected abstract void initObject();
-
-    /**
-     * 初始化成功视图
-     */
-    protected abstract void initView();
-
-    /**
-     * 初始化视图监听
-     */
-    protected abstract void initViewListener();
-
-    /**
-     * 初始化数据
-     */
-    protected abstract void initData();
-
-    /**
-     * 绑定数据到视图
-     */
-    protected abstract void initDataListener();
 
 }
