@@ -33,7 +33,11 @@ public interface PopPublicEvent<VB extends ViewBinding> extends View.OnClickList
     default Class<VB> initGenericsClass(Object o) {
         Type superClass = o.getClass().getGenericSuperclass();
         ParameterizedType parameterized = (ParameterizedType) superClass;
-        return (Class<VB>) parameterized.getActualTypeArguments()[0];
+        Class<VB> genericsCls = (Class<VB>) parameterized.getActualTypeArguments()[0];
+        if (genericsCls == ViewBinding.class) {
+            genericsCls = setBindViewClass();
+        }
+        return genericsCls;
     }
 
     /**
@@ -102,8 +106,8 @@ public interface PopPublicEvent<VB extends ViewBinding> extends View.OnClickList
      * @throws IllegalAccessException    the illegal access exception
      * @throws NoSuchMethodException     the no such method exception
      */
-    default VB inflateView(View view) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        return this.inflate(initGenericsClass(), view);
+    default VB inflateView(Object o, View view) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        return this.inflate(initGenericsClass(o), view);
     }
 
     /**
@@ -113,19 +117,6 @@ public interface PopPublicEvent<VB extends ViewBinding> extends View.OnClickList
      */
     default Class<VB> setBindViewClass() {
         return null;
-    }
-
-    /**
-     * Init generics class class.
-     *
-     * @return the class
-     */
-    default Class<VB> initGenericsClass() {
-        Class<VB> genericsCls = this.initGenericsClass(this);
-        if (genericsCls == ViewBinding.class) {
-            genericsCls = setBindViewClass();
-        }
-        return genericsCls;
     }
 
     /**

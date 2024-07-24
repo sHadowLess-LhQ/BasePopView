@@ -41,7 +41,7 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
     @Override
     protected int getImplLayoutId() {
         return getContext().getResources().getIdentifier(
-                this.getLayoutNameByBindingClass(initGenericsClass()),
+                this.getLayoutNameByBindingClass(initGenericsClass(this)),
                 DEF_TYPE,
                 getContext().getPackageName()
         );
@@ -51,7 +51,7 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
     protected void onCreate() {
         super.onCreate();
         try {
-            bind = inflateView(getPopupImplView());
+            bind = inflateView(this, getPopupImplView());
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             throw new RuntimeException("视图无法反射初始化，若动态布局请检查setBindViewClass是否传入或重写inflateView手动实现ViewBinding创建" + Log.getStackTraceString(e));
         }
