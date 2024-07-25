@@ -14,156 +14,159 @@ import cn.com.shadowless.basepopview.base.PopCons;
 /**
  * The interface Public event.
  *
- * @param <VB> the type parameter
  * @author sHadowLess
  */
-public interface PopPublicEvent<VB extends ViewBinding> extends View.OnClickListener {
+public interface PopPublicEvent {
 
     /**
-     * The constant DEF_TYPE.
-     */
-    String DEF_TYPE = "layout";
-
-    /**
-     * Init generics class class.
+     * The interface Init view binding.
      *
-     * @param o the o
-     * @return the class
+     * @param <VB> the type parameter
      */
-    default Class<VB> initGenericsClass(Object o) {
-        Type superClass = o.getClass().getGenericSuperclass();
-        ParameterizedType parameterized = (ParameterizedType) superClass;
-        Class<VB> genericsCls = (Class<VB>) parameterized.getActualTypeArguments()[0];
-        if (genericsCls == ViewBinding.class) {
-            genericsCls = setBindViewClass();
-        }
-        return genericsCls;
-    }
+    interface InitViewBinding<VB extends ViewBinding> {
+        /**
+         * The constant DEF_TYPE.
+         */
+        String DEF_TYPE = "layout";
 
-    /**
-     * Is fast click boolean.
-     *
-     * @param time the time
-     * @return the boolean
-     */
-    default boolean isFastClick(int time) {
-        long currentTime = System.currentTimeMillis();
-        long timeInterval = currentTime - PopCons.lastClickTime;
-        if (0 < timeInterval && timeInterval < time) {
-            return true;
-        }
-        PopCons.lastClickTime = currentTime;
-        return false;
-    }
-
-    /**
-     * Inflate t.
-     *
-     * @param <T>    the type parameter
-     * @param tClass the t class
-     * @param view   the view
-     * @return the t
-     * @throws InvocationTargetException the invocation target exception
-     * @throws IllegalAccessException    the illegal access exception
-     * @throws NoSuchMethodException     the no such method exception
-     */
-    default <T> T inflate(Class<T> tClass, View view) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        Method inflateMethod = tClass.getMethod("bind", View.class);
-        return (T) inflateMethod.invoke(null, view);
-    }
-
-    /**
-     * Gets layout name by binding class.
-     *
-     * @param cls the cls
-     * @return the layout name by binding class
-     */
-    default String getLayoutNameByBindingClass(Class<?> cls) {
-        StringBuilder builder = new StringBuilder();
-        boolean isFirst = true;
-        String name = cls.getSimpleName();
-        for (int i = 0; i < name.length(); i++) {
-            char temp = name.charAt(i);
-            if (Character.isUpperCase(temp)) {
-                if (!isFirst) {
-                    builder.append("_");
-                }
-                isFirst = false;
+        /**
+         * Init generics class class.
+         *
+         * @param o the o
+         * @return the class
+         */
+        default Class<VB> initGenericsClass(Object o) {
+            Type superClass = o.getClass().getGenericSuperclass();
+            ParameterizedType parameterized = (ParameterizedType) superClass;
+            Class<VB> genericsCls = (Class<VB>) parameterized.getActualTypeArguments()[0];
+            if (genericsCls == ViewBinding.class) {
+                genericsCls = setBindViewClass();
             }
-            builder.append(temp);
+            return genericsCls;
         }
-        String layoutName = builder.toString();
-        layoutName = layoutName.substring(0, layoutName.lastIndexOf("_")).toLowerCase();
-        return layoutName;
+
+        /**
+         * 设置绑定视图
+         *
+         * @return the 视图
+         */
+        default Class<VB> setBindViewClass() {
+            return null;
+        }
+
+        /**
+         * Inflate view vb.
+         *
+         * @param o    the o
+         * @param view the view
+         * @return the vb
+         * @throws InvocationTargetException the invocation target exception
+         * @throws IllegalAccessException    the illegal access exception
+         * @throws NoSuchMethodException     the no such method exception
+         */
+        default VB inflateView(Object o, View view) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+            Method inflateMethod = initGenericsClass(o).getMethod("bind", View.class);
+            return (VB) inflateMethod.invoke(null, view);
+        }
+
+        /**
+         * Gets layout name by binding class.
+         *
+         * @param cls the cls
+         * @return the layout name by binding class
+         */
+        default String getLayoutNameByBindingClass(Class<?> cls) {
+            StringBuilder builder = new StringBuilder();
+            boolean isFirst = true;
+            String name = cls.getSimpleName();
+            for (int i = 0; i < name.length(); i++) {
+                char temp = name.charAt(i);
+                if (Character.isUpperCase(temp)) {
+                    if (!isFirst) {
+                        builder.append("_");
+                    }
+                    isFirst = false;
+                }
+                builder.append(temp);
+            }
+            String layoutName = builder.toString();
+            layoutName = layoutName.substring(0, layoutName.lastIndexOf("_")).toLowerCase();
+            return layoutName;
+        }
     }
+
 
     /**
-     * Inflate view vb.
-     *
-     * @param view the view
-     * @return the vb
-     * @throws InvocationTargetException the invocation target exception
-     * @throws IllegalAccessException    the illegal access exception
-     * @throws NoSuchMethodException     the no such method exception
+     * The interface Init view click.
      */
-    default VB inflateView(Object o, View view) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        return this.inflate(initGenericsClass(o), view);
-    }
+    interface InitViewClick extends View.OnClickListener {
+        /**
+         * Is fast click boolean.
+         *
+         * @param time the time
+         * @return the boolean
+         */
+        default boolean isFastClick(int time) {
+            long currentTime = System.currentTimeMillis();
+            long timeInterval = currentTime - PopCons.lastClickTime;
+            if (0 < timeInterval && timeInterval < time) {
+                return true;
+            }
+            PopCons.lastClickTime = currentTime;
+            return false;
+        }
 
-    /**
-     * 设置绑定视图
-     *
-     * @return the 视图
-     */
-    default Class<VB> setBindViewClass() {
-        return null;
-    }
+        /**
+         * Click.
+         *
+         * @param v the v
+         */
+        default void antiShakingClick(View v) {
 
-    /**
-     * Click.
-     *
-     * @param v the v
-     */
-    default void antiShakingClick(View v) {
+        }
 
-    }
-
-    @Override
-    default void onClick(View v) {
-        if (!isFastClick(PopCons.TIME)) {
-            antiShakingClick(v);
+        @Override
+        default void onClick(View v) {
+            if (!isFastClick(PopCons.TIME)) {
+                antiShakingClick(v);
+            }
         }
     }
 
     /**
-     * 是否默认背景颜色
-     *
-     * @return the boolean
+     * The interface Init event.
      */
-    boolean isDefaultBackground();
+    interface InitEvent {
+        /**
+         * 是否默认背景颜色
+         *
+         * @return the boolean
+         */
+        boolean isDefaultBackground();
 
-    /**
-     * Init object.
-     */
-    void initObject();
+        /**
+         * Init object.
+         */
+        void initObject();
 
-    /**
-     * 初始化成功视图
-     */
-    void initView();
+        /**
+         * 初始化成功视图
+         */
+        void initView();
 
-    /**
-     * 初始化视图监听
-     */
-    void initViewListener();
+        /**
+         * 初始化视图监听
+         */
+        void initViewListener();
 
-    /**
-     * 初始化数据
-     */
-    void initData();
+        /**
+         * 初始化数据
+         */
+        void initData();
 
-    /**
-     * 绑定数据到视图
-     */
-    void initDataListener();
+        /**
+         * 绑定数据到视图
+         */
+        void initDataListener();
+    }
 }

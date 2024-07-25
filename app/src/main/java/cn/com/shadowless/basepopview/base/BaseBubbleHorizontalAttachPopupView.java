@@ -22,7 +22,7 @@ import cn.com.shadowless.basepopview.event.PopPublicEvent;
  * @author sHadowLess
  */
 public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding> extends BubbleHorizontalAttachPopupView implements
-        PopPublicEvent<VB> {
+        PopPublicEvent.InitViewBinding<VB>, PopPublicEvent.InitViewClick, PopPublicEvent.InitEvent {
 
     /**
      * 绑定视图
