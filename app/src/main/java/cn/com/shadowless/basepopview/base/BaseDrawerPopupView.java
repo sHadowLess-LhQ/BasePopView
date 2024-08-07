@@ -41,7 +41,7 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
     @Override
     protected int getImplLayoutId() {
         return getContext().getResources().getIdentifier(
-                this.getLayoutNameByBindingClass(initGenericsClass(this)),
+                this.getLayoutNameByBindingClass(initViewBindingGenericsClass(this)),
                 DEF_TYPE,
                 getContext().getPackageName()
         );

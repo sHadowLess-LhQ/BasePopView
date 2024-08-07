@@ -1,6 +1,5 @@
 package cn.com.shadowless.basepopview.event;
 
-import android.text.TextUtils;
 import android.view.View;
 
 import androidx.viewbinding.ViewBinding;
@@ -30,13 +29,17 @@ public interface PopPublicEvent {
          */
         String DEF_TYPE = "layout";
 
+
         /**
-         * Sets compare generic super class name.
+         * Get view binding generics class type [ ].
          *
-         * @return the compare generic super class name
+         * @param o the o
+         * @return the type [ ]
          */
-        default String setCompareGenericSuperClassName() {
-            return null;
+        default Type[] getViewBindingGenericsClass(Object o) {
+            Type superClass = o.getClass().getGenericSuperclass();
+            ParameterizedType parameterized = (ParameterizedType) superClass;
+            return parameterized.getActualTypeArguments();
         }
 
         /**
@@ -45,21 +48,18 @@ public interface PopPublicEvent {
          * @param o the o
          * @return the class
          */
-        default Class<VB> initGenericsClass(Object o) {
-            Type superClass = o.getClass().getGenericSuperclass();
-            ParameterizedType parameterized = (ParameterizedType) superClass;
-            Type[] types = parameterized.getActualTypeArguments();
-            String compareName = setCompareGenericSuperClassName();
-            if (TextUtils.isEmpty(compareName)) {
-                compareName = "Binding";
-            }
+        default Class<VB> initViewBindingGenericsClass(Object o) {
+            Type[] types = getViewBindingGenericsClass(o);
             for (Type type : types) {
                 Class<?> genericsCls = (Class<?>) type;
-                if (!genericsCls.getSimpleName().contains(compareName)) {
+                if (!ViewBinding.class.isAssignableFrom(genericsCls)) {
                     continue;
                 }
                 if (genericsCls == ViewBinding.class) {
                     genericsCls = setBindViewClass();
+                }
+                if (genericsCls == null) {
+                    throw new RuntimeException("实现动态ViewBinding，请重写setBindViewClass方法");
                 }
                 return (Class<VB>) genericsCls;
             }
@@ -86,7 +86,7 @@ public interface PopPublicEvent {
          * @throws NoSuchMethodException     the no such method exception
          */
         default VB inflateView(Object o, View view) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-            Method inflateMethod = initGenericsClass(o).getMethod("bind", View.class);
+            Method inflateMethod = initViewBindingGenericsClass(o).getMethod("bind", View.class);
             return (VB) inflateMethod.invoke(null, view);
         }
 

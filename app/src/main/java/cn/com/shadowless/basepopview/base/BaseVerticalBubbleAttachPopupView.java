@@ -41,7 +41,7 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
     @Override
     protected int getImplLayoutId() {
         return getContext().getResources().getIdentifier(
-                this.getLayoutNameByBindingClass(initGenericsClass(this)),
+                this.getLayoutNameByBindingClass(initViewBindingGenericsClass(this)),
                 DEF_TYPE,
                 getContext().getPackageName()
         );

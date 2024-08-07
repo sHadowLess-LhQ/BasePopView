@@ -40,7 +40,7 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
     @Override
     protected int getImplLayoutId() {
         return getContext().getResources().getIdentifier(
-                this.getLayoutNameByBindingClass(initGenericsClass(this)),
+                this.getLayoutNameByBindingClass(initViewBindingGenericsClass(this)),
                 DEF_TYPE,
                 getContext().getPackageName()
         );

@@ -41,7 +41,7 @@ public abstract class BaseVerticalAttachPopView<VB extends ViewBinding> extends 
     @Override
     protected int getImplLayoutId() {
         return getContext().getResources().getIdentifier(
-                this.getLayoutNameByBindingClass(initGenericsClass(this)),
+                this.getLayoutNameByBindingClass(initViewBindingGenericsClass(this)),
                 DEF_TYPE,
                 getContext().getPackageName()
         );
