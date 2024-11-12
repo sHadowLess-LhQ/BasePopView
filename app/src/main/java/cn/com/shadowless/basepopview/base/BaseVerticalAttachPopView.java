@@ -2,6 +2,7 @@ package cn.com.shadowless.basepopview.base;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -63,6 +64,39 @@ public abstract class BaseVerticalAttachPopView<VB extends ViewBinding> extends 
         initViewListener();
         initData();
         initDataListener();
+    }
+
+    @Override
+    public void doAttach() {
+        ViewGroup.LayoutParams params = getPopupContentView().getLayoutParams();
+        int oldWidth = params.width;
+        int oldHeight = params.height;
+        super.doAttach();
+        if (!isFixWidth()) {
+            params.width = oldWidth;
+        }
+        if (!isFixHeight()) {
+            params.height = oldHeight;
+        }
+        getPopupContentView().setLayoutParams(params);
+    }
+
+    /**
+     * Is fix height boolean.
+     *
+     * @return the boolean
+     */
+    protected boolean isFixHeight() {
+        return true;
+    }
+
+    /**
+     * Is fix width boolean.
+     *
+     * @return the boolean
+     */
+    protected boolean isFixWidth() {
+        return true;
     }
 
     /**
