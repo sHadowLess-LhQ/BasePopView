@@ -61,8 +61,8 @@ public abstract class BaseDrawerPopupView<VB extends ViewBinding> extends Drawer
         initObject();
         initView();
         initViewListener();
-        initData();
         initDataListener();
+        initData();
     }
 
     /**

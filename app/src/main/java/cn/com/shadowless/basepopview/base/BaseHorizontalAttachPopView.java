@@ -61,8 +61,8 @@ public abstract class BaseHorizontalAttachPopView<VB extends ViewBinding> extend
         initObject();
         initView();
         initViewListener();
-        initData();
         initDataListener();
+        initData();
     }
 
     /**

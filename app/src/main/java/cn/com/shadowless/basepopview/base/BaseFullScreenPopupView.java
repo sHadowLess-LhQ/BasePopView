@@ -61,8 +61,8 @@ public abstract class BaseFullScreenPopupView<VB extends ViewBinding> extends Fu
         initObject();
         initView();
         initViewListener();
-        initData();
         initDataListener();
+        initData();
     }
 
     /**

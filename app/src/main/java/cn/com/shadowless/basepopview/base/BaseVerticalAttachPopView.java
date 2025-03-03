@@ -62,8 +62,8 @@ public abstract class BaseVerticalAttachPopView<VB extends ViewBinding> extends 
         initObject();
         initView();
         initViewListener();
-        initData();
         initDataListener();
+        initData();
     }
 
     @Override

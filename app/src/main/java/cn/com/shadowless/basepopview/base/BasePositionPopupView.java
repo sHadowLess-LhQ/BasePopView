@@ -61,8 +61,8 @@ public abstract class BasePositionPopupView<VB extends ViewBinding> extends Posi
         initObject();
         initView();
         initViewListener();
-        initData();
         initDataListener();
+        initData();
     }
 
     /**

@@ -60,8 +60,8 @@ public abstract class BaseBottomPopView<VB extends ViewBinding> extends BottomPo
         initObject();
         initView();
         initViewListener();
-        initData();
         initDataListener();
+        initData();
     }
 
     /**

@@ -61,8 +61,8 @@ public abstract class BaseVerticalBubbleAttachPopupView<VB extends ViewBinding> 
         initObject();
         initView();
         initViewListener();
-        initData();
         initDataListener();
+        initData();
     }
 
     /**

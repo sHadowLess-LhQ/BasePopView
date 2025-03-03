@@ -61,8 +61,8 @@ public abstract class BaseCenterPopView<VB extends ViewBinding> extends CenterPo
         initObject();
         initView();
         initViewListener();
-        initData();
         initDataListener();
+        initData();
     }
 
     /**

@@ -61,8 +61,8 @@ public abstract class BaseBubbleHorizontalAttachPopupView<VB extends ViewBinding
         initObject();
         initView();
         initViewListener();
-        initData();
         initDataListener();
+        initData();
     }
 
     /**

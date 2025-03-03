@@ -181,13 +181,13 @@ public interface PopPublicEvent {
         void initViewListener();
 
         /**
-         * 初始化数据
-         */
-        void initData();
-
-        /**
          * 绑定数据到视图
          */
         void initDataListener();
+
+        /**
+         * 初始化数据
+         */
+        void initData();
     }
 }

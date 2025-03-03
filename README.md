@@ -141,13 +141,13 @@ c、混淆规则
          }
          
          @Override
-         protected void initData() {
-            //初始化数据
-         }
-      
-         @Override
          protected void initDataListener() {
             //初始化数据事件
+         }
+         
+         @Override
+         protected void initData() {
+            //初始化数据
          }
          
          @Override
