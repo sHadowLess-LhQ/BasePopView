@@ -63,11 +63,11 @@ a、克隆引入
 
 b、远程仓库引入
 
-[![](https://jitpack.io/v/com.gitee.shadowless_lhq/base-pop-view.svg)](https://jitpack.io/#com.gitee.shadowless_lhq/base-pop-view)
+[![](https://jitpack.io/v/sHadowLess-LhQ/BasePopView.svg)](https://jitpack.io/#sHadowLess-LhQ/BasePopView)
 
 ```
      dependencies {
-        implementation 'com.gitee.shadowless_lhq:base-pop-view:Tag'
+        implementation 'com.github.sHadowLess-LhQ:BasePopView:Tag'
         implementation 'com.github.li-xiaojun:XPopup:2.10.0'
     }
 ```
